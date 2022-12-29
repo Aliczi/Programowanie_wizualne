@@ -65,6 +65,21 @@ namespace _145213.kdramasApp.Migrations
                     b.ToTable("KDramas");
                 });
 
+            modelBuilder.Entity("_145213.kdramasApp.Models.KDramaActor", b =>
+                {
+                    b.Property<int>("ActorId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("KDramaId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("ActorId", "KDramaId");
+
+                    b.HasIndex("KDramaId");
+
+                    b.ToTable("KDramaActors");
+                });
+
             modelBuilder.Entity("_145213.kdramasApp.Models.Status", b =>
                 {
                     b.Property<int>("Id")
@@ -84,13 +99,44 @@ namespace _145213.kdramasApp.Migrations
                     b.ToTable("Statuses");
                 });
 
+            modelBuilder.Entity("_145213.kdramasApp.Models.KDramaActor", b =>
+                {
+                    b.HasOne("_145213.kdramasApp.Models.Actor", "Actor")
+                        .WithMany("KDramaActors")
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("_145213.kdramasApp.Models.KDrama", "KDrama")
+                        .WithMany("KDramaActors")
+                        .HasForeignKey("KDramaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("KDrama");
+                });
+
             modelBuilder.Entity("_145213.kdramasApp.Models.Status", b =>
                 {
                     b.HasOne("_145213.kdramasApp.Models.KDrama", "KDrama")
-                        .WithMany()
+                        .WithMany("Statuses")
                         .HasForeignKey("KDramaId");
 
                     b.Navigation("KDrama");
+                });
+
+            modelBuilder.Entity("_145213.kdramasApp.Models.Actor", b =>
+                {
+                    b.Navigation("KDramaActors");
+                });
+
+            modelBuilder.Entity("_145213.kdramasApp.Models.KDrama", b =>
+                {
+                    b.Navigation("KDramaActors");
+
+                    b.Navigation("Statuses");
                 });
 #pragma warning restore 612, 618
         }

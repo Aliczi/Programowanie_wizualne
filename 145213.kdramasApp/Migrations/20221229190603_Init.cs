@@ -5,7 +5,7 @@
 namespace _145213.kdramasApp.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,6 +40,30 @@ namespace _145213.kdramasApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "KDramaActors",
+                columns: table => new
+                {
+                    ActorId = table.Column<int>(type: "INTEGER", nullable: false),
+                    KDramaId = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_KDramaActors", x => new { x.ActorId, x.KDramaId });
+                    table.ForeignKey(
+                        name: "FK_KDramaActors_Actors_ActorId",
+                        column: x => x.ActorId,
+                        principalTable: "Actors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_KDramaActors_KDramas_KDramaId",
+                        column: x => x.KDramaId,
+                        principalTable: "KDramas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Statuses",
                 columns: table => new
                 {
@@ -65,6 +89,11 @@ namespace _145213.kdramasApp.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_KDramaActors_KDramaId",
+                table: "KDramaActors",
+                column: "KDramaId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_KDramas_Title",
                 table: "KDramas",
                 column: "Title",
@@ -80,10 +109,13 @@ namespace _145213.kdramasApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Actors");
+                name: "KDramaActors");
 
             migrationBuilder.DropTable(
                 name: "Statuses");
+
+            migrationBuilder.DropTable(
+                name: "Actors");
 
             migrationBuilder.DropTable(
                 name: "KDramas");

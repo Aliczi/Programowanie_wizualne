@@ -12,7 +12,11 @@ namespace _145213.kdramasApp.Models
 
 
         //połączenia
-        public List<Status> Statuses { get; set; } = new();
-        public List<Actor> Actors { get; set; } = new();
+        //public List<Status> Statuses { get; set; } = new();
+        public ICollection<Status>? Statuses { get; set; }
+
+        public ICollection<KDramaActor>? KDramaActors { get; set; }
+
+        //public List<Actor> Actors { get; set; } = new();
     }
 }

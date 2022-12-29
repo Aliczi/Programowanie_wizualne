@@ -13,6 +13,8 @@ namespace _145213.kdramasApp.Models
 
 
         //połączenia
-        public List<KDrama> KDramas { get; set; } = new();
+        //public List<KDrama> KDramas { get; set; } = new();
+
+        public ICollection<KDramaActor> KDramaActors { get; set; }
     }
 }

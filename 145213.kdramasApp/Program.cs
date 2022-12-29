@@ -1,12 +1,36 @@
+using _145213.kdramasApp;
 using _145213.kdramasApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddTransient<DataMock>();
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+
+
+// from terminal where .csproj is located run -> dotnet run seeddata
+if (args.Length == 1 && args[0].ToLower() == "seeddata")
+    SeedData(app);
+
+void SeedData(IHost app)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+    using (var scope = scopedFactory.CreateScope())
+    {
+        var service = scope.ServiceProvider.GetService<DataMock>();
+        service.InitDataContext();
+    }
+}
+
+
+
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
