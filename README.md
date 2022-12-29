@@ -16,3 +16,5 @@ Add-Migration <migration-name>
 Update-Migration
 Remove-Migration
 ```
+
+https://inloop.github.io/sqlite-viewer/
