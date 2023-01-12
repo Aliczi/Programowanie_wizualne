@@ -10,13 +10,14 @@ namespace _145213.kdramasApp.Models
         public string Title { get; set; }
         public string Description { get; set; }
 
+        public DateTime Data { get; set; }
 
-        //połączenia
-        //public List<Status> Statuses { get; set; } = new();
-        public ICollection<Status>? Statuses { get; set; }
 
-        public ICollection<KDramaActor>? KDramaActors { get; set; }
+        public StatusType Status { get; set; }
 
-        //public List<Actor> Actors { get; set; } = new();
+        public int? NetworkId { get; set; }
+        public Network? Network { get; set; }
+
+        public List<Actor>? Actors { get; set; } = new();
     }
 }

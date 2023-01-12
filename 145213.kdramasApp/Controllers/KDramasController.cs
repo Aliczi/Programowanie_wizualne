@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using _145213.kdramasApp.Models;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace _145213.kdramasApp.Controllers
 {
@@ -19,9 +20,83 @@ namespace _145213.kdramasApp.Controllers
         }
 
         // GET: KDramas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? SearchActors = null, string? sortTitle = null, string? sortStatus = null, string? sortDateTime = null, string? KDramaTitle = null, StatusType? DramaType = null)
         {
-            return View(await _context.KDramas.ToListAsync());
+            //ViewData["NetworkIdViewData"] = new SelectList(_context.Networks, "Id", "OffcialName");
+            //DbSet<KDrama> dataContext; //= _context.KDramas; //.Where(p => p.Title.Contains(KDramaTitle)); //.Where(p => p.Title != null);
+
+            //var sl = new SelectList(_context.Actors, "Id", "Pseudonym");
+            //ViewData["CastViewData"] = sl;
+            //var oo = sl.Items;
+            //foreach (var item in oo)
+            //{
+            //    Actor a = (Actor)item;
+            //    if (a.KDramaId != null && SearchActors != null && a.KDramaId == Int32.Parse(SearchActors))
+            //        nowaLista.Add(a.FirstName);
+
+            ////}
+            /////List<string> names = new List<string>() { "John", "Anna", "Monica" };
+            /////var aktorzy = _context.Actors.Include(g => g.FirstName).Where(p => p.Pseudonym != null);
+
+            var dramas = from s in _context.KDramas
+                         select s;
+
+
+            //filters
+            if (DramaType != null)
+            {
+                dramas = dramas.Where(s => s.Status.Equals(DramaType));
+            }
+
+            if (!String.IsNullOrEmpty(KDramaTitle))
+            {
+                dramas = dramas.Where(s => s.Title.Contains(KDramaTitle));
+            }
+            //sorts
+            if (!String.IsNullOrEmpty(sortTitle) && sortTitle.Equals("True"))
+            {
+                dramas = dramas.OrderBy(s => s.Title);
+            }
+            else
+            {
+                dramas = dramas.OrderByDescending(s => s.Title);
+            }
+            if (!String.IsNullOrEmpty(sortStatus) && sortStatus.Equals("True"))
+            {
+                dramas = dramas.OrderBy(s => s.Status);
+            }
+            if (!String.IsNullOrEmpty(sortDateTime) && sortDateTime.Equals("True"))
+            {
+                dramas = dramas.OrderBy(s => s.Data);
+            }
+
+            List<string> cast = new List<string> { };
+            var sl = new SelectList(_context.Actors, "Id", "Pseudonym");
+            foreach (var item in sl.Items)
+            {
+                Actor a = (Actor)item;
+                if (a.KDramaId != null && SearchActors != null && a.KDramaId == Int32.Parse(SearchActors))
+                    cast.Add(a.Pseudonym);
+
+            }
+            var result = String.Join(", ", cast.ToArray());
+            ViewData["CastViewData"] = result;
+
+
+            KDrama kd = dramas.Where(s => s.Title.Contains(KDramaTitle)).FirstOrDefault();
+            if (kd != null)
+            {
+                List<Actor> actors = kd.Actors;
+                if (actors != null)
+                    ViewBag.CzyPusta =  actors.Count(); ;
+            }
+            else
+            {
+                ViewBag.CzyPusta = "Pusta";
+            }
+
+            return View(await dramas.ToListAsync());
+
         }
 
         // GET: KDramas/Details/5
@@ -38,13 +113,13 @@ namespace _145213.kdramasApp.Controllers
             {
                 return NotFound();
             }
-
             return View(kDrama);
         }
 
         // GET: KDramas/Create
         public IActionResult Create()
         {
+            //ViewData["NetworkIdViewData"] = new SelectList(_context.Networks, "Id", "OffcialName");
             return View();
         }
 
@@ -53,14 +128,24 @@ namespace _145213.kdramasApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description")] KDrama kDrama)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Data,Status")] KDrama kDrama)
         {
             if (ModelState.IsValid)
             {
+                //var networks = from s in _context.Networks
+                //             select s;
+                //Network n = networks.Where(n => n.OfficialName.Contains("tv")).FirstOrDefault();
+                //if (n != null)
+                //{
+                //    n.KDramas.Add(kDrama);
+                //}
+                
+
                 _context.Add(kDrama);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            //ViewData["NetworkIdViewData"] = new SelectList(_context.Networks, "Id", "OffcialName");
             return View(kDrama);
         }
 
@@ -77,6 +162,7 @@ namespace _145213.kdramasApp.Controllers
             {
                 return NotFound();
             }
+            //ViewData["NetworkIdViewData"] = new SelectList(_context.Networks, "Id", "OffcialName");
             return View(kDrama);
         }
 
@@ -85,7 +171,7 @@ namespace _145213.kdramasApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description")] KDrama kDrama)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Status")] KDrama kDrama)
         {
             if (id != kDrama.Id)
             {
@@ -112,6 +198,7 @@ namespace _145213.kdramasApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            //ViewData["NetworkIdViewData"] = new SelectList(_context.Networks, "Id", "OffcialName");
             return View(kDrama);
         }
 
@@ -147,14 +234,14 @@ namespace _145213.kdramasApp.Controllers
             {
                 _context.KDramas.Remove(kDrama);
             }
-
+            
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool KDramaExists(int id)
         {
-            return _context.KDramas.Any(e => e.Id == id);
+          return _context.KDramas.Any(e => e.Id == id);
         }
     }
 }

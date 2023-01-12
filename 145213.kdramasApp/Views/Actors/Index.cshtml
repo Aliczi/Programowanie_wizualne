@@ -4,22 +4,25 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>KDrama Actors</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Add a new actor</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                First Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                Last Name
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Pseudonym)
+            </th>
+            <th>
+                Best KDrama
             </th>
             <th></th>
         </tr>
@@ -35,6 +38,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Pseudonym)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.KDrama.Title)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

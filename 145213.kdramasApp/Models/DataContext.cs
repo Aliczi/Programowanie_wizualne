@@ -19,26 +19,28 @@ namespace _145213.kdramasApp.Models
         }
 
         //our tables
-        public DbSet<Status> Statuses { get; set; }
         public DbSet<KDrama> KDramas { get; set; }
         public DbSet<Actor> Actors { get; set; }
-        public DbSet<KDramaActor> KDramaActors { get; set; }   //joined table
 
+        public DbSet<Network> Networks { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
-            modelbuilder.Entity<KDramaActor>()
-                .HasKey(kda => new {kda.ActorId, kda.KDramaId});
-            modelbuilder.Entity<KDramaActor>()
+            modelbuilder.Entity<Actor>()
+                .HasKey(kda => new {kda.Id});
+            modelbuilder.Entity<Actor>()
                 .HasOne(kd => kd.KDrama)
-                .WithMany(kda => kda.KDramaActors)
+                .WithMany(u => u.Actors)
                 .HasForeignKey(kd => kd.KDramaId);
-            modelbuilder.Entity<KDramaActor>()
-                .HasOne(kda => kda.Actor)
-                .WithMany(a => a.KDramaActors)
-                .HasForeignKey(kda => kda.ActorId);
-        }
 
+            modelbuilder.Entity<KDrama>()
+                .HasKey(kda => new { kda.Id });
+            modelbuilder.Entity<KDrama>()
+                .HasOne(kd => kd.Network)
+                .WithMany(u => u.KDramas)
+                .HasForeignKey(kd => kd.NetworkId);
+
+        }
     }
 }

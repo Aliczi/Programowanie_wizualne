@@ -14,79 +14,105 @@ namespace _145213.kdramasApp
 
         public void InitDataContext()
         {
-            if (!dataContext.KDramaActors.Any())
+            if (!dataContext.Actors.Any())
             {
-                var KDramaActors = new List<KDramaActor>()
+
+                var Networks = new List<Network>()
                 {
-                     new KDramaActor()
+
+                    new Network()
                     {
-                        KDrama = new KDrama()
+                        OfficialName = "tvN",
+                        Residence = "South Korea",
+                        Owner = "CJ E&M",
+                        Broadcast = new DateTime(2006, 10, 9),
+                        Language = "Korean",
+
+                        KDramas = new List<KDrama>()
                         {
-                            Title = "Something in the Rain",
-                            Description = "Slice of live",
-                            Statuses = new List<Status>()
+                            new KDrama()
                             {
-                                new Status { StatusType = StatusType.Finished }
-                            }
-                        },
-
-                        Actor = new Actor()
-                        {
-                            FirstName = "Ye Jin",
-                            LastName = "Son",
-                            Pseudonym = "SonYeJin"
-                        },
-
+                                Title = "Reborn Rich",
+                                Description = "Murder, Vengeance",
+                                Status = StatusType.Finished,
+                                Data = new DateTime(2022, 11, 18),
+                                Actors = new List<Actor>()
+                                {
+                                    new Actor()
+                                    {
+                                           FirstName = "Joong Ki",
+                                           LastName = "Song",
+                                           Pseudonym = "SongJoongKi",
+                                    },
+                                }
+                            },
+                        }
 
                     },
 
-                     new KDramaActor()
+
+                    new Network()
                     {
-                        KDrama = new KDrama()
+                        OfficialName = "Netflix",
+                        Residence = "USA",
+                        Owner = "Public",
+                        Broadcast = new DateTime(1997, 08, 29),
+                        Language = "Multilingual",
+
+                        KDramas = new List<KDrama>()
                         {
-                            Title = "Crash Landing On You",
-                            Description = "Comedy, Romance",
-                            Statuses = new List<Status>()
+                            
+                            new KDrama()
                             {
-                                new Status { StatusType = StatusType.Finished }
-                            }
-                        },
+                                    Title = "Crash Landing On You",
+                                    Description = "Comedy, Romance",
+                                    Status = StatusType.Finished,
+                                    Data = new DateTime(2019, 12, 14),
+                                    Actors = new List<Actor>()
+                                    {
+                                        new Actor()
+                                        {
+                                               FirstName = "Hyun",
+                                               LastName = "Bin",
+                                               Pseudonym = "BinHyun",
+                                        },
+                                        new Actor()
+                                        {
+                                               FirstName = "Ye Jin",
+                                               LastName = "Son",
+                                               Pseudonym = "SonYeJin",
+                                        }
+                                    }
+                            },
 
-                        Actor = new Actor()
-                        {
-                            FirstName = "Hyun",
-                            LastName = "Bin",
-                            Pseudonym = "BinHyun"
-                        },
-
-
-                    },
-
-                    new KDramaActor()
-                    {
-                        KDrama = new KDrama()
-                        {
-                            Title = "Reborn Rich",
-                            Description = "Murder, Vengeance",
-                            Statuses = new List<Status>()
+                            new KDrama()
                             {
-                                new Status { StatusType = StatusType.Finished }
+                                Title = "The Glory",
+                                Description = "Soap Opera",
+                                Status= StatusType.Ongoing,
+                                Data = new DateTime(2022, 12, 30),
+                                Actors = new List<Actor>()
+                                {
+                                    new Actor()
+                                        {
+                                               FirstName = "Hye Kyo",
+                                               LastName = "Song",
+                                               Pseudonym = "SongHyeKyo",
+                                        }
+                                }
                             }
-                        },
-
-                        Actor = new Actor()
-                        {
-                            FirstName = "Joong Ki",
-                            LastName = "Song",
-                            Pseudonym = "SongJoongKi"
-                        },
-
+                        }
 
                     }
+
+
                 };
-                dataContext.KDramaActors.AddRange(KDramaActors);
+
+
+                dataContext.Networks.AddRange(Networks);             
                 dataContext.SaveChanges();
             }
+        
         }
     }
 }

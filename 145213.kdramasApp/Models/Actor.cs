@@ -12,9 +12,8 @@ namespace _145213.kdramasApp.Models
         public string Pseudonym { get; set; }
 
 
-        //połączenia
-        //public List<KDrama> KDramas { get; set; } = new();
+        public int? KDramaId { get; set; }
+        public KDrama? KDrama { get; set; }
 
-        public ICollection<KDramaActor> KDramaActors { get; set; }
     }
 }

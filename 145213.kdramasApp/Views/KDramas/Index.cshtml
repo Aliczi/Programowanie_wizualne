@@ -4,19 +4,62 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>KDramas List</h1>
+@ViewBag.NetworkIdViewData
+@*@ViewBag.CzyPusta
+    
+<div>
+    <form asp-controller="KDramas" asp-action="Index">
+        <div>
+            <div class="col-lg-2">
+                <input class="form-control" type="text" name="SearchActors" placeholder="Type KDrama Id" />
+            </div>
 
-<p>
+            <input type="submit" value="Show actors" />
+            <a asp-action="Index">Reset</a>
+        </div>
+        
+    </form>
+</div>
+
+@{
+    if (ViewBag.CastViewData != null)
+    {
+        <h3>@ViewBag.CastViewData</h3>
+    }
+    else
+    {
+        <div>
+            No data.
+        </div>
+    }
+
+}*@
+<h1>_____________________________________</h1>
+<br />
+<h5>
     <a asp-action="Create">Create New</a>
-</p>
+</h5>
 <table class="table">
     <thead>
         <tr>
             <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
+                Release Date
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                Cast
             </th>
             <th></th>
         </tr>
@@ -24,12 +67,27 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @foreach (var it in item.Actors){
+                        <p>@it.Pseudonym</p>
+                }
+            </td>
+          
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
@@ -37,5 +95,55 @@
             </td>
         </tr>
 }
+
+       
     </tbody>
+
+  
 </table>
+
+
+<br />
+
+
+
+    <div>
+    <h3>Choose filtering </h3> <br />
+        <form asp-controller="KDramas" asp-action="Index">
+            <div class="col-lg-2" >
+                <input class="form-control" type="text" name="KDramaTitle" placeholder="Title" />
+            </div>
+
+            <div class="col-lg-2">
+            <select id="SelectType" class="form-control" name="DramaType" asp-items="Html.GetEnumSelectList<StatusType>()">
+                    <option value=null selected disabled hidden>KDrama status</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Filter" />
+
+            <a asp-action="Index">Reset</a>
+        </form>
+   </div>
+<br />
+<h3>Choose sorting </h3>
+<br />
+
+
+<form asp-controller="KDramas" asp-action="Index">
+    
+    <input type="checkbox" id="sortTitle" name="sortTitle" value="True">
+    <label for="sortTitle"> Sort by Title ASC</label>
+    <br>
+    <input type="checkbox" id="sortStatus" name="sortStatus" value="True">
+    <label for="sortStatus"> Sort by Status</label>
+    <br>
+    <input type="checkbox" id="sortDateTime" name="sortDateTime" value="True">
+    <label for="sortDateTime"> Sort by Date</label>  <br>
+    <input type="submit" value="Sort" />
+   
+    <a asp-action="Index">Reset</a>
+</form>
+
+
+
