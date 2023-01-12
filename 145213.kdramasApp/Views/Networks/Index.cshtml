@@ -5,6 +5,7 @@
 }
 
 <h1>Networks</h1>
+@*@ViewBag.CzyPusta*@
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -27,9 +28,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Language)
             </th>
-            <th>
+            @*<th>
                 Released KDramas
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -51,13 +52,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Language)
             </td>
-            <td>
+            @*<td>
                 @foreach (var it in item.KDramas)
                 {
-                    <p>@it.Title</p>
+
+                    <p>dfgdf</p>
                 }
 
-            </td>
+            </td>*@
                     
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

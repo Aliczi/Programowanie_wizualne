@@ -81,7 +81,7 @@ namespace _145213.kdramasApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["KDramaIdViewData"] = new SelectList(_context.KDramas, "Id", "Id", actor.KDramaId);
+            ViewData["KDramaIdViewData"] = new SelectList(_context.KDramas, "Id", "Title", actor.KDramaId);
             return View(actor);
         }
 

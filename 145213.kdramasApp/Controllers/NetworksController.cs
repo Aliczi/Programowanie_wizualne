@@ -25,6 +25,19 @@ namespace _145213.kdramasApp.Controllers
 
             var networks = from s in _context.Networks
                          select s;
+
+
+            Network kd = networks.Where(s => s.OfficialName.Contains("tvN")).FirstOrDefault();
+            if (kd != null)
+            {
+                List<KDrama> actors = kd.KDramas;
+                if (actors != null)
+                    ViewBag.CzyPusta = actors.Count();
+            }
+            else
+            {
+                ViewBag.CzyPusta = "Pusta";
+            }
             return View(await networks.ToListAsync());
         }
 

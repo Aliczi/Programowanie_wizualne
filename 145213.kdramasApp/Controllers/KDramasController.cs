@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using _145213.kdramasApp.Models;
 using Microsoft.AspNetCore.Components.Web;
+using System.Numerics;
 
 namespace _145213.kdramasApp.Controllers
 {
@@ -119,7 +120,7 @@ namespace _145213.kdramasApp.Controllers
         // GET: KDramas/Create
         public IActionResult Create()
         {
-            //ViewData["NetworkIdViewData"] = new SelectList(_context.Networks, "Id", "OffcialName");
+            ViewData["NetworkIdViewData"] = new SelectList(_context.Networks, "Id", "OfficialName");
             return View();
         }
 
@@ -128,7 +129,7 @@ namespace _145213.kdramasApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Data,Status")] KDrama kDrama)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Data,Status,NetworkId")] KDrama kDrama)
         {
             if (ModelState.IsValid)
             {
@@ -145,7 +146,7 @@ namespace _145213.kdramasApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["NetworkIdViewData"] = new SelectList(_context.Networks, "Id", "OffcialName");
+            ViewData["NetworkIdViewData"] = new SelectList(_context.Networks, "Id", "Id", kDrama.NetworkId );
             return View(kDrama);
         }
 

@@ -41,6 +41,9 @@ namespace _145213.kdramasApp.Models
                 .WithMany(u => u.KDramas)
                 .HasForeignKey(kd => kd.NetworkId);
 
+            modelbuilder.Entity<Network>()
+                .HasKey(key => new {key.Id});
+
         }
     }
 }
