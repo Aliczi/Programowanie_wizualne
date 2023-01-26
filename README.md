@@ -13,7 +13,7 @@ Install-Package Microsoft.EntityFrameWorkCore.Tools
 Install-Package Microsoft.EntityFrameWorkCore
 NuGet\Install-Package Microsoft.VisualStudio.Web.CodeGeneration.Design -Version 6.0.10
 Add-Migration <migration-name>
-Update-Migration
+Update-Database
 Remove-Migration
 ```
 
